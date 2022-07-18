@@ -3,29 +3,39 @@ import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import styles from "./TaskForm.module.css"
 //interfaces 
 import { ITask } from "../Interfaces/Task";
+import { title } from 'process';
 
 interface Props{
     btnText : string
     TaskList : ITask[]
     SetTaskList? : React.Dispatch<React.SetStateAction<ITask[]>>
+    task? : ITask | null;
+    handleUpdate?(Id : number, Title : string, Dif : number) : void 
 }
-const TaskForm = ({btnText, TaskList, SetTaskList} : Props) => {
+const TaskForm = ({btnText, TaskList, SetTaskList, task, handleUpdate} : Props) => {
 
     const [Id, SetId] = useState<number>(0)
     const [Title, SetTitle] = useState<string>("")
     const [Dif, SetDif] = useState<number>(0)
 
+    useEffect(() =>{
+        if(task){
+            SetId(task.Id)
+            SetTitle(task.Title)
+            SetDif(task.Dif)
+        }
+    }, [task])
+
     const AddTaskHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const id = Math.floor(Math.random() * 1000)
-
-        const NewTask : ITask = {Id, Title, Dif}
-
-        SetTaskList!([...TaskList, NewTask])
-
-        SetTitle("");
-
-        console.log(TaskList)
+        if(handleUpdate){
+            handleUpdate(Id, Title, Dif)
+        }else{
+            const id = Math.floor(Math.random() * 1000)
+            const NewTask : ITask = {Id, Title, Dif}
+            SetTaskList!([...TaskList, NewTask])
+            SetTitle("");
+        }
      }
 
     const HandleChange = (e: ChangeEvent<HTMLInputElement>) => {
