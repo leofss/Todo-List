@@ -38,8 +38,8 @@ function App() {
     SetTaskUpdate(task);
   }
 
-  const UpdateTask = (Id : number, Title : string, Dif : number) => {
-    const UpDate : ITask = {Id, Title, Dif}
+  const UpdateTask = (Id : number, Title : string, Dif : number, Desc : string) => {
+    const UpDate : ITask = {Id, Title, Dif, Desc}
 
     const UpDateItems = tasklist.map((task) =>{
       return task.Id === UpDate.Id ? UpDate : task
